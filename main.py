@@ -8,7 +8,7 @@ def main():
     data_gen = DataGenerator()
     data_df = data_gen.get_data()
     line_plot(data_df, 'ds', 'y')
-    SeasonalDecomposition(df=data_df, index_column='ds').decomposed_series()
+    # SeasonalDecomposition(df=data_df, index_column='ds').decomposed_series()
     plt.show()
 
 
