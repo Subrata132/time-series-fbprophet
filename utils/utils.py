@@ -20,3 +20,15 @@ def test_train_split(threshold_date, df, show=True):
         ax.legend(loc='upper left')
         ax.set(title='Dependent Variable', ylabel='')
     return df_train, df_test
+
+
+def create_end_of_year_holiday():
+    holidays = pd.DataFrame({
+      'holiday': 'end_of_year',
+      'ds': pd.to_datetime(
+          ['2016-12-25', '2017-12-24', '2018-12-23', '2019-12-22']
+      ),
+      'lower_window': -7,
+      'upper_window': 7,
+    })
+    return holidays
