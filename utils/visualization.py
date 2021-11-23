@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
 
 
@@ -23,3 +24,30 @@ def plot_all_component(df):
     sns.lineplot(x='ds', y='noise', label='noise', data=df, alpha=0.7, ax=ax)
     ax.legend(loc='upper left')
     ax.set(title='Raw Data -  Components', xlabel='date', ylabel='')
+
+
+def plot_prediction(forecast,
+                    train_df,
+                    test_df,
+                    threshold_date):
+    threshold_date = pd.to_datetime(threshold_date)
+    mask = forecast['ds'] < threshold_date
+    forecast_train = forecast[mask]
+    forecast_test = forecast[~ mask]
+    fig, ax = plt.subplots()
+
+    ax.fill_between(
+        x=forecast['ds'],
+        y1=forecast['yhat_lower'],
+        y2=forecast['yhat_upper'],
+        color=sns_c[2],
+        alpha=0.25,
+        label=r'0.95 credible_interval'
+    )
+
+    sns.lineplot(x='ds', y='y', label='y_train', data=train_df, ax=ax)
+    sns.lineplot(x='ds', y='y', label='y_test', data=test_df, ax=ax)
+    sns.lineplot(x='ds', y='yhat', label='y_hat', data=forecast, ax=ax)
+    ax.axvline(threshold_date, color=sns_c[3], linestyle='--', label='train test split')
+    ax.legend(loc='upper left')
+    ax.set(title='Dependent Variable', ylabel='')
